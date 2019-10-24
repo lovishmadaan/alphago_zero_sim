@@ -56,6 +56,8 @@ The `AlphaGoPlayer_<group_id>.py` should contain:
 
 * `def get_action():` Given a particular state of the board, this returns an action taken by your player on the board, integer between `[0, board_size^2 + 1]`
 
+We have provided you a sample of AlphaGoPlayer: `AlphaGoPlayer_1.py` and `AlphaGoPlayer_2.py`
+
 ### Running a single match instance
 
 `single_match.py` contains the class `SingleMatch()`, which is initialized by `board_size`, `komi_value` and the `match_directory` (diirectory location for the match between 2 opponents). It has the following functions:
