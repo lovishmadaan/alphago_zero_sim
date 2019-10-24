@@ -7,6 +7,8 @@ Simulator and competition code for COL870(Reinforcement Learning)
 
 > Env is hacked from Atari Py.
 
+The simulator and environment code is present in `goSim.py`
+
 - **Basic functions**
     - `reset()`: Reset the environment such that player 1 is BLACK and player 2 is WHITE
     - `step(a_t)`: Take an action `a_t` in environment (board in our case)
