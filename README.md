@@ -24,7 +24,7 @@ The simulator and environment code is present in `goSim.py`
     - Passing `board_size^2 + 1`: It will mean resign action
 - **Special mention**
     - Two consecutive pass actions by players means game is terminated
-    - If player one passes but player two does not pass then player one can play again next time and vice versa.
+    - If player one passes but player two does not pass then player one can pass again next time and vice versa.
 
 
 
@@ -54,7 +54,7 @@ The `AlphaGoPlayer_<group_id>.py` should contain:
 
 * `class AlphaGoPlayer():` This class should contain `init_state` (initial state of the board), `seed` (seed for initializations in your training) and `player_color` (integer, BLACK: 1 and WHITE: 2)
 
-* `def get_action():` Given a particular state of the board, this returns an action taken by your player on the board, integer between `[0, board_size^2 + 1]`
+* `def get_action(s_t):` Given the current state of the board as input, this returns an action taken by your player on the board, integer between `[0, board_size^2 + 1]`
 
 We have provided you a sample of AlphaGoPlayer: `AlphaGoPlayer_1.py` and `AlphaGoPlayer_2.py`
 
@@ -62,7 +62,7 @@ We have provided you a sample of AlphaGoPlayer: `AlphaGoPlayer_1.py` and `AlphaG
 
 `single_match.py` contains the class `SingleMatch()`, which is initialized by `board_size`, `komi_value` and the `match_directory` (diirectory location for the match between 2 opponents). It has the following functions:
 
-* `get_action()`: used to obtain the action by a particular player from `AlphaGoPlayer_<group_id>.py`.
+* `get_action(s_t)`: used to obtain the action by a particular player from `AlphaGoPlayer_<group_id>.py`.
 
 * `run_match()`: Runs 1 match instance between the 2 players(player order decided in `tournament.py`). Returns winner, score after the match is completed(positive score indicates white player won and negative score indicates black player won) and writes the history of actions taken by each player in `actions.csv`
 
