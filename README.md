@@ -60,7 +60,7 @@ We have provided you a sample of AlphaGoPlayer: `AlphaGoPlayer_1.py` and `AlphaG
 
 ### Running a single match instance
 
-`single_match.py` contains the class `SingleMatch()`, which is initialized by `board_size`, `komi_value` and the `match_directory` (diirectory location for the match between 2 opponents). It has the following functions:
+`single_match.py` contains the class `SingleMatch()`, which is initialized by `board_size`, `komi_value` and the `match_directory` (directory location for the match between 2 opponents). It has the following functions:
 
 * `get_action(s_t)`: used to obtain the action by a particular player from `AlphaGoPlayer_<group_id>.py`.
 
