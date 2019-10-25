@@ -66,6 +66,8 @@ We have provided you a sample of AlphaGoPlayer: `AlphaGoPlayer_1.py` and `AlphaG
 
 * `run_match()`: Runs 1 match instance between the 2 players(player order decided in `tournament.py`). Returns winner, score after the match is completed(positive score indicates white player won and negative score indicates black player won) and writes the history of actions taken by each player in `actions.csv`
 
+> NOTE: If you want to run `single_match.py`, you will have to import `AlphaGoPlayer`. `tournament.py` takes care of this by making a temporary python file depending on which pair of players are selected.
+
 ### How to run the Tournament
 
 `tournament.py` contains the classes `Tournament()` and `RunMatches()`. `Tournament()` is used to play between all players taken two at a time and `RunMatches()` is used to play the matches between a particular pair of players.
