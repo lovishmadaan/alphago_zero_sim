@@ -175,6 +175,9 @@ class GoEnv(gym.Env):
 
         # Modifications
         self.last_player_passed = False
+        self.BLACK = np.array([1,0,0])
+        self.WHITE = np.array([0,1,0])
+        self.EMPTY = np.array([0,0,1])
 
     def _seed(self, seed=None):
         self.np_random, seed1 = seeding.np_random(seed)
@@ -306,6 +309,31 @@ class GoEnv(gym.Env):
         player_wins = (white_wins and self.player_color == pachi_py.WHITE) or (black_wins and self.player_color == pachi_py.BLACK)
         reward = 1. if player_wins else -1. if (white_wins or black_wins) else 0.
         return self.state.board.encode(), reward, True, {'state': self.state}, current_score
+
+    # Given an observation checks if an action is valid or not
+    def is_legal_action(self, obs, action, cur_player_color):
+        # If pass or resign
+        if action == _pass_action(self.board_size) or action == _resign_action(self.board_size):
+            return True
+        # Action should in valid range
+        if action > _resign_action(self.board_size) + 1:
+            return False
+        # get cordinates
+        a_x, a_y = (action // self.board_size, action % self.board_size)
+        # If position is occupied
+        if not np.all(obs[:, a_x, a_y] == self.EMPTY):
+            return False
+        # Illegal only if all surrounding places are of different color
+        opp_player = self.BLACK if cur_player_color == 2 else self.WHITE
+        if a_x > 0 and not np.all(obs[:, a_x-1, a_y] == opp_player):
+            return True
+        if a_x != self.board_size-1 and not np.all(obs[:, a_x+1, a_y] == opp_player):
+            return True
+        if a_y > 0 and not np.all(obs[:, a_x, a_y-1] == opp_player):
+            return True
+        if a_y != self.board_size-1 and not np.all(obs[:, a_x, a_y+1] == opp_player):
+            return True
+        return False
 
 
     def _exec_opponent_play(self, curr_state, prev_state, prev_action):

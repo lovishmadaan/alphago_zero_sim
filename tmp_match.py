@@ -1,4 +1,4 @@
-import AlphaGoPlayer_3 as Player_1
+import AlphaGoPlayer_1 as Player_1
 import AlphaGoPlayer_2 as Player_2
 from time_handler import deadline, TimedOutExc
 import numpy as np
@@ -35,6 +35,9 @@ class SingleMatch():
 
         i = 0
         history = []
+
+        # player_actions = [1, 169,13, 168, 15, 167, 26, 166, 28, 165, 40, 0]
+        player_actions = [0, 1, 166, 13]
         while True:
             # Get player
             player_color = i % 2 + 1
@@ -46,14 +49,24 @@ class SingleMatch():
             # Get Player action
             # Todo Check for out of memory and other errors
             try:
-                a_t = self.get_action(player)
+                # a_t = self.get_action(player)
+                a_t = player_actions[i]
             except TimedOutExc as e:
                 print("took too long")
                 a_t = goSim._pass_action(self.board_size)
 
+            # Check if action is legal or not
+            self.env.render()
+            print(a_t)
+            is_legal_action = self.env.is_legal_action(self.obs_t, a_t, player_color)
+            print(is_legal_action)
+            print()
+            print()
+            print()
             # Take action
             self.obs_t, r_t, done, info, cur_score = self.env.step(a_t)
-            self.env.render()
+            # self.env.render()
+            # print(self.obs_t)
             history.append(str(player_color) + ': ' + str(a_t))
             if done:
                 if cur_score > 0:
@@ -77,3 +90,7 @@ class SingleMatch():
             # Book Keeping
             i += 1
         self.env.close()
+
+
+match = SingleMatch(board_size=13, komi=7.5, match_folder="match_12")
+match.run_match()
