@@ -316,7 +316,7 @@ class GoEnv(gym.Env):
         if action == _pass_action(self.board_size) or action == _resign_action(self.board_size):
             return True
         # Action should in valid range
-        if action > _resign_action(self.board_size) + 1:
+        if action < 0 or action > _resign_action(self.board_size) + 1:
             return False
         # get cordinates
         a_x, a_y = (action // self.board_size, action % self.board_size)
