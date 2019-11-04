@@ -11,6 +11,7 @@ class SingleMatch():
         self.komi = komi
         self.seed = np.random.rand()
         self.match_folder = match_folder
+        self.opponent_action = -1
 
         self.env = goSim.GoEnv(player_color=self.player_color, observation_type='image3c', illegal_move_mode="raise", board_size=self.board_size, komi=self.komi)
 
@@ -26,7 +27,7 @@ class SingleMatch():
 
     @deadline(5)
     def get_action(self, p):
-        return p.get_action(self.obs_t.copy())
+        return p.get_action(self.obs_t.copy(), self.opponent_action)
 
     def run_match(self):
         done = False
@@ -50,8 +51,9 @@ class SingleMatch():
                 a_t = goSim._pass_action(self.board_size)
 
             # Take action
-            self.obs_t, r_t, done, info, cur_score = self.env.step(a_t)
+            self.obs_t, a_t, r_t, done, info, cur_score = self.env.step(a_t)
             self.env.render()
+            self.opponent_action = a_t
             history.append(str(player_color) + ': ' + str(a_t))
             if done:
                 if cur_score > 0:

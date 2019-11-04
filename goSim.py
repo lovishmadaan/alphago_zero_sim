@@ -227,7 +227,7 @@ class GoEnv(gym.Env):
 
         player_wins = (white_wins and self.player_color == pachi_py.WHITE) or (black_wins and self.player_color == pachi_py.BLACK)
         reward = 1. if player_wins else -1. if (white_wins or black_wins) else 0.
-        return self.state.board.encode(), reward, True, {'state': self.state}, current_score
+        return self.state.board.encode(), _pass_action(self.board_size), reward, True, {'state': self.state}, current_score
 
     # Game terminates
     # return obs_t, r_t, done, info, cur_score
@@ -242,12 +242,12 @@ class GoEnv(gym.Env):
 
         # If already terminal, then don't do anything
         if self.done:
-            return self.state.board.encode(), 0., True, {'state': self.state}, current_score
+            return self.state.board.encode(), action, 0., True, {'state': self.state}, current_score
 
         # If resigned, then we're done
         if action == _resign_action(self.board_size):
             self.done = True
-            return self.state.board.encode(), -1., True, {'state': self.state}, current_score
+            return self.state.board.encode(), action, -1., True, {'state': self.state}, current_score
 
         # Play
         try:
@@ -270,7 +270,7 @@ class GoEnv(gym.Env):
             elif self.illegal_move_mode == 'lose':
                 # Automatic loss on illegal move
                 self.done = True
-                return self.state.board.encode(), -1., True, {'state': self.state}, current_score
+                return self.state.board.encode(), _pass_action(self.board_size), -1., True, {'state': self.state}, current_score
             else:
                 raise error.Error('Unsupported illegal move action: {}'.format(self.illegal_move_mode))
 
@@ -294,7 +294,7 @@ class GoEnv(gym.Env):
         # Reward: if nonterminal, then the reward is 0
         if not self.state.board.is_terminal:
             self.done = False
-            return self.state.board.encode(), 0., False, {'state': self.state}, current_score
+            return self.state.board.encode(), action, 0., False, {'state': self.state}, current_score
 
         # We're in a terminal state. Reward is 1 if won, -1 if lost
         assert self.state.board.is_terminal
@@ -308,7 +308,7 @@ class GoEnv(gym.Env):
 
         player_wins = (white_wins and self.player_color == pachi_py.WHITE) or (black_wins and self.player_color == pachi_py.BLACK)
         reward = 1. if player_wins else -1. if (white_wins or black_wins) else 0.
-        return self.state.board.encode(), reward, True, {'state': self.state}, current_score
+        return self.state.board.encode(), action, reward, True, {'state': self.state}, current_score
 
     # Given an observation checks if an action is valid or not
     def is_legal_action(self, obs, action, cur_player_color):
