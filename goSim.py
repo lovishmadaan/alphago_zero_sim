@@ -311,7 +311,7 @@ class GoEnv(gym.Env):
         return self.state.board.encode(), action, reward, True, {'state': self.state}, current_score
 
     # Given an observation checks if an action is valid or not
-    def is_legal_action(self, obs, action, cur_player_color):
+    def is_legal_action_old(self, obs, action, cur_player_color):
         # If pass or resign
         if action == _pass_action(self.board_size) or action == _resign_action(self.board_size):
             return True
@@ -334,6 +334,15 @@ class GoEnv(gym.Env):
         if a_y != self.board_size-1 and not np.all(obs[:, a_x, a_y+1] == opp_player):
             return True
         return False
+
+    # Takes in self.env.state and action to take, player color is assumed to be correct
+    def is_legal_action(self, state, action):
+        temp_state = copy(state)
+        try:
+            temp_state.act(action)
+        except pachi_py.IllegalMove:
+            return False
+        return True
 
 
     def _exec_opponent_play(self, curr_state, prev_state, prev_action):
