@@ -12,6 +12,7 @@ from gym.utils import seeding
 from six import StringIO
 import sys
 import six
+from copy import copy
 
 
 # The coordinate representation of Pachi (and pachi_py) is defined on a board
