@@ -250,6 +250,7 @@ class GoEnv(gym.Env):
             self.done = True
             return self.state.board.encode(), action, -1., True, {'state': self.state}, current_score
 
+        pass_flag = False
         # Play
         try:
             print(action)
@@ -266,6 +267,7 @@ class GoEnv(gym.Env):
                     self.last_player_passed = True
                 self.state = self.state.act(_pass_action(self.board_size))
                 current_score = self.state.board.official_score + self.komi
+                pass_flag = True
                 print("illegal_move, considered as Pass")
                 # six.reraise(*sys.exc_info())
             elif self.illegal_move_mode == 'lose':
@@ -295,7 +297,10 @@ class GoEnv(gym.Env):
         # Reward: if nonterminal, then the reward is 0
         if not self.state.board.is_terminal:
             self.done = False
-            return self.state.board.encode(), action, 0., False, {'state': self.state}, current_score
+            if pass_flag:
+                return self.state.board.encode(), _pass_action(self.board_size), 0., False, {'state': self.state}, current_score
+            else:
+                return self.state.board.encode(), action, 0., False, {'state': self.state}, current_score
 
         # We're in a terminal state. Reward is 1 if won, -1 if lost
         assert self.state.board.is_terminal
