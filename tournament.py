@@ -5,13 +5,14 @@ import sys
 import time
 
 class Tournament():
-    def __init__(self, student_list, num_matches, board_size, komi):
+    def __init__(self, student_list, num_matches, board_size, komi, folder_name, gpu_id):
         self.student_list = student_list
         self.num_matches = num_matches
         self.board_size = board_size
         self.komi = komi
-        self.folder_name = 'Tournament'
+        self.folder_name = folder_name
         self.module_folder = 'modules'
+        self.gpu_id = gpu_id
 
         if not os.path.exists(self.folder_name):
             os.makedirs(self.folder_name)
@@ -26,19 +27,20 @@ class Tournament():
                 p2 = self.student_list[j]
 
                 root_folder = self.folder_name + '/' + str(p1) + '_' + str(p2)
-                head_to_head = RunMatches(p1, p2, self.num_matches, root_folder, self.board_size, self.komi)
+                head_to_head = RunMatches(p1, p2, self.num_matches, root_folder, self.board_size, self.komi, self.gpu_id)
                 head_to_head.run_matches()
 
 
 
 class RunMatches():
-    def __init__(self, p1, p2, num_matches, root_folder, board_size, komi):
+    def __init__(self, p1, p2, num_matches, root_folder, board_size, komi, gpu_id):
         self.player1 = p1
         self.player2 = p2
         self.num_matches = num_matches
         self.root_folder = root_folder
         self.board_size = board_size
         self.komi = komi
+        self.gpu_id = gpu_id
 
         if not os.path.exists(self.root_folder):
             os.makedirs(self.root_folder)
@@ -64,12 +66,12 @@ class RunMatches():
                 for line in lines:
                     fw.write(line)
             fw.close()
-            time.sleep(1)
+            time.sleep(3)
             tmp_match = importlib.import_module('modules.tmp_match_' + str(self.player1) + '_' + str(self.player2) + '_' + str(match_num))
-            match = tmp_match.SingleMatch(self.board_size, self.komi, match_folder)
+            match = tmp_match.SingleMatch(self.board_size, self.komi, match_folder, first_player, second_player, self.gpu_id)
             winner, final_score = match.run_match()
 
 
-t = Tournament([1,2], 4, 13, 7.5)
+t = Tournament([1,2], 4, 13, 7.5, 'Tournament', 0)
 
 t.run_tournament()
