@@ -65,8 +65,8 @@ class RunMatches():
                 second_player = self.player1
             match_folder = self.root_folder + '/match' + str(match_num + 1)
             with open('modules/tmp_match_' + str(self.player1) + '_' + str(self.player2) + '_' + str(match_num) + '.py', 'w') as fw:
-                fw.write('import AlphaGoPlayer_' + str(first_player) + ' as Player_1\n')
-                fw.write('import AlphaGoPlayer_' + str(second_player) + ' as Player_2\n')
+                fw.write('import Extracted_submissions/alphago_zero_sim_' + str(first_player) + '/AlphaGoPlayer_' + str(first_player) + ' as Player_1\n')
+                fw.write('import Extracted_submissions/alphago_zero_sim_' + str(first_player) + '/AlphaGoPlayer_' + str(first_player) + ' as Player_1\n')
                 lines = None
                 with open('single_match.py', 'r') as fr:
                     lines = fr.readlines()
