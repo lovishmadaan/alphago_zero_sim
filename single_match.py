@@ -80,13 +80,13 @@ class SingleMatch():
                 if done:
                     if cur_score > 0:
                         # White i.e. player 2 wins
-                        winner = "P2"
+                        winner = self.p2_name
                     elif cur_score < 0:
                         # Black i.e. player 1 wins
-                        winner = "P1"
+                        winner = self.p1_name
                     else:
                         # Draw
-                        winner = "DRAW"
+                        winner = -1
                     break
 
                 # Book Keeping
